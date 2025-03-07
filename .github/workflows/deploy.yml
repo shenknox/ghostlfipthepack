@@ -11,7 +11,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
+        with:
+          submodules: false  # <--- Ignore submodules (Fix for your issue)
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -24,4 +26,6 @@ jobs:
         run: npm run build
 
       - name: Deploy to Cloudflare Pages
-        run: wrangler pages publish out
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: npx wrangler pages publish out
